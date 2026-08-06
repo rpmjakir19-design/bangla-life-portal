@@ -1,20 +1,5260 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>বাংলা লাইফ পোর্টাল</title>
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<meta name="theme-color" content="#075985">
+
+<title>দেশ বার্তা ৪২০</title>
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+    "Noto Sans Bengali",
+    "Nirmala UI",
+    Arial,
+    sans-serif;
+
+    background:#f1f5f9;
+    color:#17202a;
+
+    padding-bottom:80px;
+}
+
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    position:sticky;
+    top:0;
+
+    z-index:5000;
+
+    background:
+    linear-gradient(
+        135deg,
+        #064e3b,
+        #075985,
+        #0e7490
+    );
+
+    color:white;
+
+    padding:10px 12px;
+
+    box-shadow:
+    0 3px 15px rgba(0,0,0,.18);
+}
+
+.header-row{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+}
+
+.logo-icon{
+
+    width:44px;
+    height:44px;
+
+    border-radius:13px;
+
+    background:
+    rgba(255,255,255,.17);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+}
+
+.logo-title{
+
+    font-size:20px;
+
+    font-weight:900;
+
+    letter-spacing:.2px;
+}
+
+.logo-sub{
+
+    font-size:10px;
+
+    opacity:.85;
+
+    margin-top:2px;
+}
+
+.profile-button{
+
+    width:42px;
+    height:42px;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:
+    rgba(255,255,255,.17);
+
+    color:white;
+
+    font-size:20px;
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search{
+
+    margin-top:10px;
+
+    height:43px;
+
+    background:white;
+
+    border-radius:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 12px;
+}
+
+.search-icon{
+
+    font-size:18px;
+
+    margin-right:7px;
+}
+
+.search input{
+
+    width:100%;
+
+    border:0;
+
+    outline:0;
+
+    font-size:13px;
+
+    color:#263238;
+
+    background:transparent;
+}
+
+
+/* =====================================================
+   RUNNING HEADLINE
+===================================================== */
+
+.ticker{
+
+    margin:9px 10px 0;
+
+    background:white;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 3px 12px rgba(0,0,0,.08);
+}
+
+.ticker-label{
+
+    background:#dc2626;
+
+    color:white;
+
+    padding:8px 12px;
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.ticker-window{
+
+    height:39px;
+
+    display:flex;
+
+    align-items:center;
+
+    overflow:hidden;
+}
+
+.ticker-track{
+
+    white-space:nowrap;
+
+    padding-left:100%;
+
+    animation:
+    tickerMove 32s linear infinite;
+
+    font-size:13px;
+
+    font-weight:700;
+}
+
+@keyframes tickerMove{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    100%{
+        transform:translateX(-100%);
+    }
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.container{
+
+    width:100%;
+
+    max-width:720px;
+
+    margin:auto;
+
+    padding:0 10px;
+}
+
+
+/* =====================================================
+   BRAND BANNER
+===================================================== */
+
+.brand-banner{
+
+    margin-top:12px;
+
+    padding:18px 14px;
+
+    text-align:center;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #075985,
+        #0f766e
+    );
+
+    color:white;
+
+    box-shadow:
+    0 7px 20px rgba(0,0,0,.14);
+}
+
+.brand-name{
+
+    font-size:30px;
+
+    font-weight:950;
+
+    letter-spacing:1px;
+
+    text-shadow:
+    0 3px 7px rgba(0,0,0,.30);
+}
+
+.brand-line{
+
+    width:90px;
+
+    height:3px;
+
+    margin:8px auto;
+
+    background:white;
+
+    border-radius:10px;
+
+    opacity:.8;
+}
+
+.brand-tag{
+
+    font-size:11px;
+
+    opacity:.9;
+}
+
+
+/* =====================================================
+   USER LOCATION CARD
+===================================================== */
+
+.location-card{
+
+    margin-top:12px;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:13px;
+
+    box-shadow:
+    0 4px 13px rgba(0,0,0,.06);
+}
+
+.location-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.location-icon{
+
+    width:46px;
+    height:46px;
+
+    border-radius:13px;
+
+    background:#e0f2fe;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+}
+
+.location-title{
+
+    font-size:14px;
+
+    font-weight:900;
+}
+
+.location-text{
+
+    margin-top:3px;
+
+    color:#64748b;
+
+    font-size:10px;
+}
+
+.location-button{
+
+    width:100%;
+
+    border:0;
+
+    margin-top:10px;
+
+    padding:10px;
+
+    border-radius:11px;
+
+    background:#075985;
+
+    color:white;
+
+    font-size:11px;
+
+    font-weight:850;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+
+    margin-top:17px;
+}
+
+.section-head{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:9px;
+}
+
+.section-title{
+
+    font-size:17px;
+
+    font-weight:900;
+}
+
+.see-all{
+
+    border:0;
+
+    background:transparent;
+
+    color:#0369a1;
+
+    font-size:11px;
+
+    font-weight:850;
+}
+
+
+/* =====================================================
+   MAIN NEWS
+===================================================== */
+
+.main-news-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 5px 16px rgba(0,0,0,.08);
+
+    cursor:pointer;
+}
+
+.main-news-image{
+
+    width:100%;
+
+    height:210px;
+
+    object-fit:cover;
+
+    display:block;
+
+    background:#e2e8f0;
+}
+
+.main-news-content{
+
+    padding:14px;
+}
+
+.main-news-title{
+
+    font-size:19px;
+
+    line-height:1.5;
+
+    font-weight:950;
+}
+
+.main-news-meta{
+
+    margin-top:7px;
+
+    color:#64748b;
+
+    font-size:10px;
+}
+
+
+/* =====================================================
+   NEWS LIST
+===================================================== */
+
+.news-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:9px;
+}
+
+.news-card{
+
+    display:flex;
+
+    gap:10px;
+
+    background:white;
+
+    padding:10px;
+
+    border-radius:15px;
+
+    box-shadow:
+    0 3px 10px rgba(0,0,0,.06);
+
+    cursor:pointer;
+}
+
+.news-image{
+
+    width:100px;
+
+    height:76px;
+
+    border-radius:10px;
+
+    object-fit:cover;
+
+    flex-shrink:0;
+
+    background:#e2e8f0;
+}
+
+.news-title{
+
+    font-size:14px;
+
+    font-weight:850;
+
+    line-height:1.45;
+}
+
+.news-meta{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-size:10px;
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty{
+
+    background:white;
+
+    padding:25px 15px;
+
+    text-align:center;
+
+    border-radius:15px;
+
+    color:#64748b;
+
+    font-size:12px;
+
+    box-shadow:
+    0 3px 10px rgba(0,0,0,.05);
+}
+
+.empty-icon{
+
+    font-size:35px;
+
+    margin-bottom:8px;
+}
+
+
+/* =====================================================
+   CATEGORY GRID
+===================================================== */
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:8px;
+}
+
+.category{
+
+    border:0;
+
+    min-height:78px;
+
+    background:white;
+
+    border-radius:15px;
+
+    box-shadow:
+    0 3px 10px rgba(0,0,0,.06);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:5px;
+
+    color:#263238;
+
+    font-size:10px;
+
+    font-weight:800;
+}
+
+.category-icon{
+
+    font-size:23px;
+}
+
+
+/* =====================================================
+   CATEGORY NEWS PAGE
+===================================================== */
+
+.category-page{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:9000;
+
+    background:#f1f5f9;
+
+    overflow-y:auto;
+}
+
+.category-header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:20;
+
+    background:
+    linear-gradient(
+        135deg,
+        #064e3b,
+        #075985
+    );
+
+    color:white;
+
+    padding:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.back-button{
+
+    width:40px;
+    height:40px;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:
+    rgba(255,255,255,.16);
+
+    color:white;
+
+    font-size:20px;
+}
+
+.category-header-title{
+
+    font-size:18px;
+
+    font-weight:900;
+}
+
+.category-body{
+
+    max-width:720px;
+
+    margin:auto;
+
+    padding:10px;
+}
+
+
+/* =====================================================
+   EMERGENCY
+===================================================== */
+
+.emergency{
+
+    background:white;
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 4px 13px rgba(0,0,0,.07);
+}
+
+.emergency-head{
+
+    background:#991b1b;
+
+    color:white;
+
+    padding:11px 13px;
+
+    font-size:14px;
+
+    font-weight:900;
+}
+
+.emergency-item{
+
+    padding:12px 13px;
+
+    border-bottom:1px solid #eef2f7;
+
+    cursor:pointer;
+}
+
+.emergency-item:last-child{
+
+    border-bottom:0;
+}
+
+.emergency-title{
+
+    font-size:14px;
+
+    font-weight:850;
+}
+
+.emergency-text{
+
+    margin-top:5px;
+
+    font-size:11px;
+
+    color:#64748b;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   DYNAMIC CARDS
+===================================================== */
+
+.dynamic-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:9px;
+}
+
+.dynamic-card{
+
+    background:white;
+
+    border-radius:17px;
+
+    padding:14px;
+
+    box-shadow:
+    0 4px 13px rgba(0,0,0,.06);
+
+    cursor:pointer;
+}
+
+.dynamic-icon{
+
+    font-size:27px;
+}
+
+.dynamic-title{
+
+    margin-top:6px;
+
+    font-size:15px;
+
+    font-weight:900;
+}
+
+.dynamic-description{
+
+    margin-top:4px;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+    color:#64748b;
+}
+
+
+/* =====================================================
+   HOROSCOPE
+===================================================== */
+
+.horoscope-card{
+
+    background:
+    linear-gradient(
+        135deg,
+        #312e81,
+        #581c87,
+        #7e22ce
+    );
+
+    color:white;
+
+    border-radius:19px;
+
+    padding:15px;
+
+    box-shadow:
+    0 7px 18px rgba(49,46,129,.20);
+}
+
+.horo-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:7px;
+
+    margin-top:13px;
+}
+
+.horo-item{
+
+    border:0;
+
+    border-radius:11px;
+
+    padding:9px 4px;
+
+    background:
+    rgba(255,255,255,.13);
+
+    color:white;
+
+    font-size:9px;
+
+    font-weight:750;
+}
+
+.horo-symbol{
+
+    display:block;
+
+    font-size:20px;
+
+    margin-bottom:3px;
+}
+
+
+/* =====================================================
+   WEATHER
+===================================================== */
+
+.weather-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    box-shadow:
+    0 4px 13px rgba(0,0,0,.06);
+}
+
+.weather-main{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.weather-location{
+
+    font-size:13px;
+
+    font-weight:850;
+}
+
+.weather-status{
+
+    font-size:11px;
+
+    color:#64748b;
+
+    margin-top:3px;
+}
+
+.temperature{
+
+    font-size:30px;
+}
+
+.weather-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:7px;
+
+    margin-top:12px;
+}
+
+.weather-item{
+
+    background:#f8fafc;
+
+    border-radius:11px;
+
+    padding:9px;
+
+    text-align:center;
+
+    font-size:10px;
+}
+
+.weather-value{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:850;
+
+    margin-top:3px;
+}
+
+
+/* =====================================================
+   MARKET
+===================================================== */
+
+.market-list{
+
+    background:white;
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 4px 13px rgba(0,0,0,.06);
+}
+
+.market-row{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:11px 13px;
+
+    border-bottom:1px solid #eef2f7;
+
+    font-size:12px;
+}
+
+.market-row:last-child{
+
+    border-bottom:0;
+}
+
+
+/* =====================================================
+   GOV
+===================================================== */
+
+.gov-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:8px;
+}
+
+.gov-card{
+
+    border:0;
+
+    background:white;
+
+    border-radius:14px;
+
+    padding:12px 6px;
+
+    min-height:86px;
+
+    box-shadow:
+    0 3px 10px rgba(0,0,0,.05);
+
+    text-align:center;
+
+    font-size:10px;
+
+    font-weight:750;
+}
+
+.gov-icon{
+
+    display:block;
+
+    font-size:24px;
+
+    margin-bottom:6px;
+}
+
+
+/* =====================================================
+   POST REQUEST
+===================================================== */
+
+.post-card{
+
+    background:
+    linear-gradient(
+        135deg,
+        #ea580c,
+        #c2410c
+    );
+
+    color:white;
+
+    border-radius:19px;
+
+    padding:17px;
+
+    box-shadow:
+    0 7px 18px rgba(194,65,12,.22);
+}
+
+.post-title{
+
+    font-size:18px;
+
+    font-weight:900;
+}
+
+.post-text{
+
+    font-size:11px;
+
+    line-height:1.6;
+
+    margin-top:5px;
+
+    opacity:.9;
+}
+
+.post-button{
+
+    width:100%;
+
+    margin-top:12px;
+
+    border:0;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    background:white;
+
+    color:#c2410c;
+
+    font-size:13px;
+
+    font-weight:900;
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    right:0;
+
+    z-index:7000;
+
+    height:67px;
+
+    background:white;
+
+    border-top:1px solid #e2e8f0;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(5,1fr);
+
+    box-shadow:
+    0 -4px 16px rgba(0,0,0,.08);
+}
+
+.nav-item{
+
+    border:0;
+
+    background:transparent;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:3px;
+
+    color:#64748b;
+
+    font-size:9px;
+
+    font-weight:800;
+}
+
+.nav-icon{
+
+    font-size:21px;
+}
+
+.nav-item.active{
+
+    color:#075985;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:99999;
+
+    background:
+    rgba(0,0,0,.65);
+
+    align-items:flex-end;
+
+    justify-content:center;
+}
+
+.modal-box{
+
+    width:100%;
+
+    max-width:680px;
+
+    max-height:88vh;
+
+    overflow-y:auto;
+
+    background:white;
+
+    border-radius:
+    23px 23px 0 0;
+
+    padding:20px;
+
+    animation:
+    modalUp .25s ease;
+}
+
+@keyframes modalUp{
+
+    from{
+        transform:translateY(100%);
+    }
+
+    to{
+        transform:translateY(0);
+    }
+}
+
+.modal-title{
+
+    font-size:19px;
+
+    font-weight:950;
+}
+
+.modal-meta{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-size:10px;
+}
+
+.modal-text{
+
+    margin-top:12px;
+
+    color:#334155;
+
+    font-size:14px;
+
+    line-height:1.9;
+
+    white-space:pre-wrap;
+}
+
+.modal-media{
+
+    margin-top:12px;
+}
+
+.modal-media img{
+
+    width:100%;
+
+    max-height:320px;
+
+    object-fit:cover;
+
+    border-radius:13px;
+}
+
+.modal-close{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:12px;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    background:#075985;
+
+    color:white;
+
+    font-weight:850;
+}
+
+
+/* =====================================================
+   LOCATION MODAL
+===================================================== */
+
+.location-select{
+
+    width:100%;
+
+    padding:11px;
+
+    margin-top:9px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:10px;
+
+    outline:0;
+
+    background:white;
+
+    font-size:12px;
+}
+
+.save-location{
+
+    width:100%;
+
+    margin-top:12px;
+
+    border:0;
+
+    border-radius:11px;
+
+    padding:11px;
+
+    background:#075985;
+
+    color:white;
+
+    font-weight:850;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:370px){
+
+    .category-grid{
+
+        grid-template-columns:
+        repeat(3,1fr);
+    }
+
+    .horo-grid{
+
+        grid-template-columns:
+        repeat(3,1fr);
+    }
+
+    .brand-name{
+
+        font-size:26px;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>বাংলা লাইফ পোর্টাল</h1>
 
-<h2>আসসালামু আলাইকুম</h2>
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<p>বাংলা লাইফ পোর্টালে আপনাকে স্বাগতম।</p>
+<header class="header">
 
-<p>এখান থেকেই আমাদের স্বপ্নের ওয়েবসাইট তৈরি শুরু হলো।</p>
+    <div class="header-row">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                📰
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    দেশ বার্তা ৪২০
+                </div>
+
+                <div class="logo-sub">
+                    বাংলাদেশের গ্রামগঞ্জ থেকে বিশ্ব সংবাদ
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+        class="profile-button"
+        onclick="openProfile()">
+
+            👤
+
+        </button>
+
+    </div>
+
+
+    <div class="search">
+
+        <span class="search-icon">
+            🔎
+        </span>
+
+        <input
+        id="searchInput"
+        type="search"
+        placeholder="খবর, জেলা, এলাকা বা বিষয় খুঁজুন..."
+        oninput="searchNews()">
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     TICKER
+===================================================== -->
+
+<div class="ticker">
+
+    <div class="ticker-label">
+        🔴 চলমান শিরোনাম
+    </div>
+
+    <div class="ticker-window">
+
+        <div
+        id="tickerTrack"
+        class="ticker-track">
+
+            📰 দেশ বার্তা ৪২০ — সর্বশেষ সংবাদ এখানে প্রদর্শিত হবে
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     BRAND
+===================================================== -->
+
+<section class="brand-banner">
+
+    <div class="brand-name">
+        দেশ বার্তা ৪২০
+    </div>
+
+    <div class="brand-line"></div>
+
+    <div class="brand-tag">
+        বাংলাদেশের গ্রামগঞ্জ থেকে বিশ্ব সংবাদ
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LOCATION
+===================================================== -->
+
+<section class="location-card">
+
+    <div class="location-row">
+
+        <div class="location-icon">
+            📍
+        </div>
+
+        <div>
+
+            <div
+            id="locationTitle"
+            class="location-title">
+
+                আমার এলাকার সংবাদ
+
+            </div>
+
+            <div
+            id="locationText"
+            class="location-text">
+
+                আপনার এলাকা নির্বাচন করলে
+                সেই এলাকার সংবাদ এখানে দেখানো হবে।
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+    class="location-button"
+    onclick="openLocationModal()">
+
+        📍 আমার এলাকা নির্বাচন করুন
+
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     EMERGENCY
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🚨 জরুরি সংবাদ
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('জরুরি সংবাদ')">
+
+            সব দেখুন
+
+        </button>
+
+    </div>
+
+
+    <div
+    id="emergencyList"
+    class="emergency">
+
+        <div class="emergency-head">
+            🚨 জরুরি সংবাদ
+        </div>
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📢
+            </div>
+
+            এখনো কোনো জরুরি সংবাদ প্রকাশিত হয়নি।
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MAIN NEWS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            📰 প্রধান সংবাদ
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('সকল সংবাদ')">
+
+            সকল সংবাদ
+
+        </button>
+
+    </div>
+
+
+    <div id="mainNews">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📰
+            </div>
+
+            প্রকাশিত প্রধান সংবাদ এখানে দেখা যাবে।
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TODAY NEWS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🗞️ সর্বশেষ সংবাদ
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('সকল সংবাদ')">
+
+            সব দেখুন
+
+        </button>
+
+    </div>
+
+
+    <div
+    id="newsList"
+    class="news-list">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📰
+            </div>
+
+            এখনো কোনো প্রকাশিত সংবাদ নেই।
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LOCAL NEWS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            📍 আমার এলাকার খবর
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openLocalNews()">
+
+            সব দেখুন
+
+        </button>
+
+    </div>
+
+
+    <div
+    id="localNewsList"
+    class="news-list">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📍
+            </div>
+
+            এলাকা নির্বাচন করার পর
+            স্থানীয় সংবাদ এখানে দেখা যাবে।
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CATEGORY
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🗂️ সংবাদ বিভাগ
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('সকল সংবাদ')">
+
+            সকল
+
+        </button>
+
+    </div>
+
+
+    <div class="category-grid">
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('জাতীয় সংবাদ')">
+
+            <span class="category-icon">🇧🇩</span>
+            জাতীয়
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('রাজনীতি')">
+
+            <span class="category-icon">🏛️</span>
+            রাজনীতি
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('আন্তর্জাতিক')">
+
+            <span class="category-icon">🌍</span>
+            আন্তর্জাতিক
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('গ্রামগঞ্জ')">
+
+            <span class="category-icon">🏘️</span>
+            গ্রামগঞ্জ
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('স্বাস্থ্য')">
+
+            <span class="category-icon">🏥</span>
+            স্বাস্থ্য
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('শিক্ষা')">
+
+            <span class="category-icon">🎓</span>
+            শিক্ষা
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('খেলাধুলা')">
+
+            <span class="category-icon">🏆</span>
+            খেলাধুলা
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('কৃষি')">
+
+            <span class="category-icon">🌾</span>
+            কৃষি
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('আবহাওয়া')">
+
+            <span class="category-icon">🌦️</span>
+            আবহাওয়া
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('বন্যা ও জলোচ্ছ্বাস')">
+
+            <span class="category-icon">🌊</span>
+            বন্যা
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('বিদ্যুৎ')">
+
+            <span class="category-icon">⚡</span>
+            বিদ্যুৎ
+
+        </button>
+
+
+        <button
+        class="category"
+        onclick="openCategoryPage('বাজার দর')">
+
+            <span class="category-icon">🛒</span>
+            বাজার দর
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DYNAMIC SECTIONS
+===================================================== -->
+
+<section
+id="dynamicSectionWrapper"
+class="section"
+style="display:none;">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            ⭐ বিশেষ বিভাগ
+        </div>
+
+    </div>
+
+
+    <div
+    id="dynamicCards"
+    class="dynamic-list">
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HOROSCOPE
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🔮 রাশিফল
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('রাশিফল')">
+
+            সব দেখুন
+
+        </button>
+
+    </div>
+
+
+    <div class="horoscope-card">
+
+        <div class="horo-grid">
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('মেষ')">
+
+                <span class="horo-symbol">♈</span>
+                মেষ
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('বৃষ')">
+
+                <span class="horo-symbol">♉</span>
+                বৃষ
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('মিথুন')">
+
+                <span class="horo-symbol">♊</span>
+                মিথুন
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('কর্কট')">
+
+                <span class="horo-symbol">♋</span>
+                কর্কট
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('সিংহ')">
+
+                <span class="horo-symbol">♌</span>
+                সিংহ
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('কন্যা')">
+
+                <span class="horo-symbol">♍</span>
+                কন্যা
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('তুলা')">
+
+                <span class="horo-symbol">♎</span>
+                তুলা
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('বৃশ্চিক')">
+
+                <span class="horo-symbol">♏</span>
+                বৃশ্চিক
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('ধনু')">
+
+                <span class="horo-symbol">♐</span>
+                ধনু
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('মকর')">
+
+                <span class="horo-symbol">♑</span>
+                মকর
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('কুম্ভ')">
+
+                <span class="horo-symbol">♒</span>
+                কুম্ভ
+
+            </button>
+
+
+            <button
+            class="horo-item"
+            onclick="openHoroscope('মীন')">
+
+                <span class="horo-symbol">♓</span>
+                মীন
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     WEATHER
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🌦️ আবহাওয়া
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('আবহাওয়া')">
+
+            বিস্তারিত
+
+        </button>
+
+    </div>
+
+
+    <div class="weather-card">
+
+        <div class="weather-main">
+
+            <div>
+
+                <div
+                id="weatherLocation"
+                class="weather-location">
+
+                    🇧🇩 বাংলাদেশের আবহাওয়া
+
+                </div>
+
+                <div class="weather-status">
+                    প্রকাশিত আবহাওয়া তথ্য
+                </div>
+
+            </div>
+
+            <div class="temperature">
+                🌤️
+            </div>
+
+        </div>
+
+
+        <div class="weather-grid">
+
+            <div class="weather-item">
+                🌧️ বৃষ্টি
+                <span class="weather-value">
+                    তথ্য অপেক্ষমাণ
+                </span>
+            </div>
+
+            <div class="weather-item">
+                🌡️ তাপমাত্রা
+                <span class="weather-value">
+                    তথ্য অপেক্ষমাণ
+                </span>
+            </div>
+
+            <div class="weather-item">
+                🌊 সতর্কতা
+                <span class="weather-value">
+                    তথ্য অপেক্ষমাণ
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MARKET
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🛒 বাজার দর
+        </div>
+
+        <button
+        class="see-all"
+        onclick="openCategoryPage('বাজার দর')">
+
+            বিস্তারিত
+
+        </button>
+
+    </div>
+
+
+    <div class="market-list">
+
+        <div class="market-row">
+
+            <span>🥔 আলু</span>
+
+            <strong>তথ্য অপেক্ষমাণ</strong>
+
+        </div>
+
+        <div class="market-row">
+
+            <span>🧅 পেঁয়াজ</span>
+
+            <strong>তথ্য অপেক্ষমাণ</strong>
+
+        </div>
+
+        <div class="market-row">
+
+            <span>🍚 চাল</span>
+
+            <strong>তথ্য অপেক্ষমাণ</strong>
+
+        </div>
+
+        <div class="market-row">
+
+            <span>🐟 মাছ</span>
+
+            <strong>তথ্য অপেক্ষমাণ</strong>
+
+        </div>
+
+        <div class="market-row">
+
+            <span>🥩 মাংস</span>
+
+            <strong>তথ্য অপেক্ষমাণ</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     GOVERNMENT
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-head">
+
+        <div class="section-title">
+            🏢 সরকারি তথ্য ও সেবা
+        </div>
+
+    </div>
+
+
+    <div class="gov-grid">
+
+
+        <button
+        class="gov-card"
+        onclick="openCategoryPage('পল্লী বিদ্যুৎ')">
+
+            <span class="gov-icon">
+                ⚡
+            </span>
+
+            পল্লী বিদ্যুৎ
+
+        </button>
+
+
+        <button
+        class="gov-card"
+        onclick="openCategoryPage('স্বাস্থ্য ও টিকা')">
+
+            <span class="gov-icon">
+                💉
+            </span>
+
+            টিকা ও স্বাস্থ্য
+
+        </button>
+
+
+        <button
+        class="gov-card"
+        onclick="openCategoryPage('হাসপাতাল')">
+
+            <span class="gov-icon">
+                🏥
+            </span>
+
+            হাসপাতাল
+
+        </button>
+
+
+        <button
+        class="gov-card"
+        onclick="openCategoryPage('ইউনিয়ন পরিষদ')">
+
+            <span class="gov-icon">
+                🏢
+            </span>
+
+            ইউনিয়ন পরিষদ
+
+        </button>
+
+
+        <button
+        class="gov-card"
+        onclick="openCategoryPage('সরকারি বিতরণ')">
+
+            <span class="gov-icon">
+                📦
+            </span>
+
+            সরকারি বিতরণ
+
+        </button>
+
+
+        <button
+        class="gov-card"
+        onclick="openCategoryPage('সরকারি ঘোষণা')">
+
+            <span class="gov-icon">
+                📢
+            </span>
+
+            সরকারি ঘোষণা
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     USER POST
+===================================================== -->
+
+<section class="section">
+
+    <div class="post-card">
+
+        <div class="post-title">
+            ✍️ আপনিও সংবাদ পাঠান
+        </div>
+
+        <div class="post-text">
+            আপনার এলাকার সত্য ও যাচাইযোগ্য সংবাদ
+            পাঠাতে পারবেন। অনুমোদিত সংবাদ প্রকাশিত
+            হলে সংশ্লিষ্ট এলাকার ব্যবহারকারীরা দেখতে পারবেন।
+        </div>
+
+        <button
+        class="post-button"
+        onclick="openPostRequest()">
+
+            📝 সংবাদ পাঠান
+
+        </button>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<nav class="bottom-nav">
+
+
+    <button
+    class="nav-item active"
+    onclick="goHome()">
+
+        <span class="nav-icon">
+            🏠
+        </span>
+
+        হোম
+
+    </button>
+
+
+    <button
+    class="nav-item"
+    onclick="openCategoryPage('সকল সংবাদ')">
+
+        <span class="nav-icon">
+            📰
+        </span>
+
+        সংবাদ
+
+    </button>
+
+
+    <button
+    class="nav-item"
+    onclick="openPostRequest()">
+
+        <span class="nav-icon">
+            ➕
+        </span>
+
+        পোস্ট
+
+    </button>
+
+
+    <button
+    class="nav-item"
+    onclick="openCategoryPage('রাশিফল')">
+
+        <span class="nav-icon">
+            🔮
+        </span>
+
+        রাশিফল
+
+    </button>
+
+
+    <button
+    class="nav-item"
+    onclick="openProfile()">
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        প্রোফাইল
+
+    </button>
+
+</nav>
+
+
+<!-- =====================================================
+     CATEGORY PAGE
+===================================================== -->
+
+<div
+id="categoryPage"
+class="category-page">
+
+    <div class="category-header">
+
+        <button
+        class="back-button"
+        onclick="closeCategoryPage()">
+
+            ←
+
+        </button>
+
+        <div
+        id="categoryPageTitle"
+        class="category-header-title">
+
+            সংবাদ
+
+        </div>
+
+    </div>
+
+
+    <div class="category-body">
+
+        <div
+        id="categoryPageNews"
+        class="news-list">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN MODAL
+===================================================== -->
+
+<div
+id="modal"
+class="modal">
+
+    <div class="modal-box">
+
+        <div
+        id="modalTitle"
+        class="modal-title">
+
+            দেশ বার্তা ৪২০
+
+        </div>
+
+        <div
+        id="modalMeta"
+        class="modal-meta">
+
+        </div>
+
+        <div
+        id="modalMedia"
+        class="modal-media">
+
+        </div>
+
+        <div
+        id="modalText"
+        class="modal-text">
+
+        </div>
+
+        <button
+        class="modal-close"
+        onclick="closeModal()">
+
+            বন্ধ করুন
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOCATION MODAL
+===================================================== -->
+
+<div
+id="locationModal"
+class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-title">
+            📍 আমার এলাকা নির্বাচন
+        </div>
+
+        <select
+        id="divisionSelect"
+        class="location-select"
+        onchange="loadDistricts()">
+
+            <option value="">
+                বিভাগ নির্বাচন করুন
+            </option>
+
+            <option value="বরিশাল">
+                বরিশাল
+            </option>
+
+            <option value="ঢাকা">
+                ঢাকা
+            </option>
+
+            <option value="চট্টগ্রাম">
+                চট্টগ্রাম
+            </option>
+
+            <option value="খুলনা">
+                খুলনা
+            </option>
+
+            <option value="রাজশাহী">
+                রাজশাহী
+            </option>
+
+            <option value="রংপুর">
+                রংপুর
+            </option>
+
+            <option value="সিলেট">
+                সিলেট
+            </option>
+
+            <option value="ময়মনসিংহ">
+                ময়মনসিংহ
+            </option>
+
+        </select>
+
+
+        <select
+        id="districtSelect"
+        class="location-select">
+
+            <option value="">
+                জেলা নির্বাচন করুন
+            </option>
+
+        </select>
+
+
+        <input
+        id="upazilaInput"
+        class="location-select"
+        placeholder="উপজেলা / থানা লিখুন">
+
+
+        <input
+        id="unionInput"
+        class="location-select"
+        placeholder="ইউনিয়ন লিখুন">
+
+
+        <input
+        id="villageInput"
+        class="location-select"
+        placeholder="গ্রাম / এলাকা লিখুন">
+
+
+        <button
+        class="save-location"
+        onclick="saveLocation()">
+
+            ✅ এলাকা সংরক্ষণ করুন
+
+        </button>
+
+
+        <button
+        class="modal-close"
+        onclick="closeLocationModal()">
+
+            বন্ধ করুন
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyAwhqCmjWNr_yPAaKg30dMOkLs-VpU8otk",
+
+    authDomain:
+    "online-income-420-b9a27.firebaseapp.com",
+
+    databaseURL:
+    "https://online-income-420-b9a27-default-rtdb.firebaseio.com",
+
+    projectId:
+    "online-income-420-b9a27",
+
+    storageBucket:
+    "online-income-420-b9a27.firebasestorage.app",
+
+    messagingSenderId:
+    "504147678380",
+
+    appId:
+    "1:504147678380:web:bcbca517eb06e3771abb09",
+
+    measurementId:
+    "G-P4JH7BXDWV"
+};
+
+
+if(!firebase.apps.length){
+
+    firebase.initializeApp(
+        firebaseConfig
+    );
+
+}
+
+
+const database =
+    firebase.database();
+
+
+/* =====================================================
+   USER LOCAL ID
+===================================================== */
+
+let deviceUserId =
+    localStorage.getItem(
+        "deshbarta420_user_id"
+    );
+
+
+if(!deviceUserId){
+
+    deviceUserId =
+        "user_" +
+        Date.now() +
+        "_" +
+        Math.random()
+        .toString(36)
+        .substring(2,8);
+
+    localStorage.setItem(
+        "deshbarta420_user_id",
+        deviceUserId
+    );
+
+}
+
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
+let userLocation =
+    JSON.parse(
+        localStorage.getItem(
+            "deshbarta420_location"
+        ) || "null"
+    );
+
+
+/* =====================================================
+   DISTRICTS
+===================================================== */
+
+const districts = {
+
+    "বরিশাল":[
+        "বরিশাল",
+        "ভোলা",
+        "পটুয়াখালী",
+        "পিরোজপুর",
+        "ঝালকাঠি",
+        "বরগুনা"
+    ],
+
+    "ঢাকা":[
+        "ঢাকা",
+        "গাজীপুর",
+        "নারায়ণগঞ্জ",
+        "নরসিংদী",
+        "মানিকগঞ্জ",
+        "মুন্সীগঞ্জ",
+        "মাদারীপুর",
+        "রাজবাড়ী",
+        "শরীয়তপুর",
+        "ফরিদপুর",
+        "গোপালগঞ্জ",
+        "টাঙ্গাইল",
+        "কিশোরগঞ্জ"
+    ],
+
+    "চট্টগ্রাম":[
+        "চট্টগ্রাম",
+        "কক্সবাজার",
+        "কুমিল্লা",
+        "ফেনী",
+        "নোয়াখালী",
+        "লক্ষ্মীপুর",
+        "চাঁদপুর",
+        "ব্রাহ্মণবাড়িয়া",
+        "রাঙ্গামাটি",
+        "খাগড়াছড়ি",
+        "বান্দরবান"
+    ],
+
+    "খুলনা":[
+        "খুলনা",
+        "যশোর",
+        "সাতক্ষীরা",
+        "বাগেরহাট",
+        "ঝিনাইদহ",
+        "মাগুরা",
+        "নড়াইল",
+        "কুষ্টিয়া",
+        "চুয়াডাঙ্গা",
+        "মেহেরপুর"
+    ],
+
+    "রাজশাহী":[
+        "রাজশাহী",
+        "নাটোর",
+        "নওগাঁ",
+        "চাঁপাইনবাবগঞ্জ",
+        "পাবনা",
+        "সিরাজগঞ্জ",
+        "বগুড়া",
+        "জয়পুরহাট"
+    ],
+
+    "রংপুর":[
+        "রংপুর",
+        "দিনাজপুর",
+        "ঠাকুরগাঁও",
+        "পঞ্চগড়",
+        "নীলফামারী",
+        "লালমনিরহাট",
+        "কুড়িগ্রাম",
+        "গাইবান্ধা"
+    ],
+
+    "সিলেট":[
+        "সিলেট",
+        "মৌলভীবাজার",
+        "হবিগঞ্জ",
+        "সুনামগঞ্জ"
+    ],
+
+    "ময়মনসিংহ":[
+        "ময়মনসিংহ",
+        "জামালপুর",
+        "শেরপুর",
+        "নেত্রকোনা"
+    ]
+
+};
+
+
+/* =====================================================
+   SAFE TEXT
+===================================================== */
+
+function safeText(value){
+
+    return String(
+        value === undefined ||
+        value === null
+        ? ""
+        : value
+    );
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(value){
+
+    if(!value){
+        return "";
+    }
+
+    let date =
+        new Date(value);
+
+    if(
+        isNaN(
+            date.getTime()
+        )
+    ){
+
+        return "";
+
+    }
+
+    return date.toLocaleString(
+        "bn-BD",
+        {
+            day:"numeric",
+            month:"long",
+            year:"numeric",
+            hour:"numeric",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CONTENT EXPIRY
+===================================================== */
+
+function isExpired(item){
+
+    if(!item){
+        return true;
+    }
+
+    if(
+        item.durationType ===
+        "lifetime"
+    ){
+
+        return false;
+
+    }
+
+    if(
+        item.expiresAt
+    ){
+
+        return Date.now() >
+        Number(item.expiresAt);
+
+    }
+
+    if(
+        item.expiryDate
+    ){
+
+        return Date.now() >
+        new Date(
+            item.expiryDate
+        ).getTime();
+
+    }
+
+    return false;
+
+}
+
+
+/* =====================================================
+   LOCATION MATCH
+===================================================== */
+
+function matchesLocation(
+    news
+){
+
+    if(!news){
+        return false;
+    }
+
+    if(
+        news.visibility ===
+        "international" ||
+        news.scope ===
+        "international"
+    ){
+
+        return true;
+
+    }
+
+    if(
+        news.visibility ===
+        "national" ||
+        news.scope ===
+        "national"
+    ){
+
+        return true;
+
+    }
+
+    if(
+        news.publicType ===
+        "all"
+    ){
+
+        return true;
+
+    }
+
+
+    if(!userLocation){
+
+        return false;
+
+    }
+
+
+    const fields = [
+
+        "division",
+        "district",
+        "upazila",
+        "thana",
+        "union",
+        "village",
+        "area"
+
+    ];
+
+
+    let hasLocation =
+        false;
+
+
+    for(
+        let i=0;
+        i<fields.length;
+        i++
+    ){
+
+        const field =
+            fields[i];
+
+        if(
+            news[field] &&
+            userLocation[field]
+        ){
+
+            hasLocation =
+                true;
+
+            if(
+                safeText(
+                    news[field]
+                ).trim()
+                !==
+                safeText(
+                    userLocation[field]
+                ).trim()
+            ){
+
+                return false;
+
+            }
+
+        }
+
+    }
+
+
+    return hasLocation;
+
+}
+
+
+/* =====================================================
+   GET NEWS OBJECT
+===================================================== */
+
+function normalizeNews(
+    id,
+    item
+){
+
+    item =
+        item || {};
+
+    return {
+
+        id:id,
+
+        ...item,
+
+        title:
+        item.title ||
+        item.headline ||
+        "সংবাদ",
+
+        content:
+        item.content ||
+        item.description ||
+        item.body ||
+        "",
+
+        image:
+        item.image ||
+        item.imageUrl ||
+        item.photo ||
+        "",
+
+        category:
+        item.category ||
+        "সাধারণ সংবাদ",
+
+        status:
+        item.status ||
+        "",
+
+        createdAt:
+        item.createdAt ||
+        item.timestamp ||
+        Date.now()
+
+    };
+
+}
+
+
+/* =====================================================
+   RENDER IMAGE
+===================================================== */
+
+function imageHTML(
+    image,
+    className
+){
+
+    if(!image){
+
+        return `
+        <div class="${className}"
+        style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:28px;
+        ">
+        📰
+        </div>
+        `;
+
+    }
+
+    return `
+    <img
+    class="${className}"
+    src="${safeText(image)}"
+    alt="সংবাদ ছবি"
+    onerror="this.style.display='none'">
+    `;
+
+}
+
+
+/* =====================================================
+   OPEN NEWS
+===================================================== */
+
+function openNews(
+    news
+){
+
+    if(!news){
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).innerText =
+        news.title ||
+        "সংবাদ";
+
+
+    document.getElementById(
+        "modalMeta"
+    ).innerText =
+
+        safeText(
+            news.category
+        ) +
+
+        " • " +
+
+        safeText(
+            news.district ||
+            "বাংলাদেশ"
+        ) +
+
+        " • " +
+
+        formatDate(
+            news.createdAt
+        );
+
+
+    let media = "";
+
+    if(news.image){
+
+        media +=
+        `<img
+        src="${safeText(news.image)}"
+        alt="সংবাদ ছবি"
+        onerror="this.style.display='none'">`;
+
+    }
+
+
+    /*
+       YouTube Embed
+    */
+
+    if(news.youtubeUrl){
+
+        let videoId =
+            extractYouTubeId(
+                news.youtubeUrl
+            );
+
+        if(videoId){
+
+            media +=
+            `
+            <div
+            style="
+            position:relative;
+            padding-bottom:56.25%;
+            height:0;
+            margin-top:10px;
+            overflow:hidden;
+            border-radius:13px;
+            ">
+
+            <iframe
+            src="https://www.youtube.com/embed/${videoId}"
+            style="
+            position:absolute;
+            width:100%;
+            height:100%;
+            border:0;
+            "
+            allowfullscreen>
+            </iframe>
+
+            </div>
+            `;
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "modalMedia"
+    ).innerHTML =
+        media;
+
+
+    document.getElementById(
+        "modalText"
+    ).innerText =
+        news.content ||
+        "এই সংবাদের বিস্তারিত তথ্য এখনো যুক্ত করা হয়নি।";
+
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* =====================================================
+   YOUTUBE ID
+===================================================== */
+
+function extractYouTubeId(
+    url
+){
+
+    if(!url){
+
+        return "";
+
+    }
+
+    let match =
+        url.match(
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/]+)/
+        );
+
+    return match
+        ? match[1]
+        : "";
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal(){
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   LOAD HEADLINES
+===================================================== */
+
+function loadHeadlines(){
+
+    database
+    .ref("headlines")
+    .orderByChild("status")
+    .equalTo("published")
+    .on(
+        "value",
+        function(snapshot){
+
+            let data =
+                snapshot.val();
+
+            let list = [];
+
+
+            if(data){
+
+                Object.keys(data)
+                .forEach(
+                    function(id){
+
+                        let item =
+                            data[id];
+
+                        if(
+                            item &&
+                            !isExpired(item)
+                        ){
+
+                            list.push(item);
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            list.sort(
+                function(a,b){
+
+                    return Number(
+                        b.createdAt ||
+                        b.timestamp ||
+                        0
+                    )
+                    -
+                    Number(
+                        a.createdAt ||
+                        a.timestamp ||
+                        0
+                    );
+
+                }
+            );
+
+
+            const track =
+                document.getElementById(
+                    "tickerTrack"
+                );
+
+
+            if(!list.length){
+
+                track.innerText =
+                    "📰 দেশ বার্তা ৪২০ — এখনো কোনো চলমান শিরোনাম প্রকাশিত হয়নি।";
+
+                return;
+
+            }
+
+
+            track.innerText =
+                list
+                .map(
+                    function(item){
+
+                        return " 📰 " +
+                        safeText(
+                            item.title ||
+                            item.headline
+                        );
+
+                    }
+                )
+                .join(
+                    "   •   "
+                );
+
+        },
+        function(error){
+
+            console.log(
+                "Headline Error:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOAD NEWS
+===================================================== */
+
+let allNews = [];
+
+
+function loadNews(){
+
+    database
+    .ref("news")
+    .orderByChild("status")
+    .equalTo("published")
+    .on(
+        "value",
+        function(snapshot){
+
+            let data =
+                snapshot.val();
+
+            allNews = [];
+
+
+            if(data){
+
+                Object.keys(data)
+                .forEach(
+                    function(id){
+
+                        let news =
+                            normalizeNews(
+                                id,
+                                data[id]
+                            );
+
+
+                        if(
+                            news.status ===
+                            "published" &&
+                            !isExpired(news)
+                        ){
+
+                            allNews.push(
+                                news
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            allNews.sort(
+                function(a,b){
+
+                    return Number(
+                        b.createdAt
+                    )
+                    -
+                    Number(
+                        a.createdAt
+                    );
+
+                }
+            );
+
+
+            renderMainNews();
+
+            renderNewsList();
+
+            renderLocalNews();
+
+        },
+        function(error){
+
+            console.log(
+                "News Error:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   MAIN NEWS
+===================================================== */
+
+function renderMainNews(){
+
+    const box =
+        document.getElementById(
+            "mainNews"
+        );
+
+
+    if(!allNews.length){
+
+        box.innerHTML = `
+        <div class="empty">
+
+            <div class="empty-icon">
+                📰
+            </div>
+
+            এখনো কোনো প্রকাশিত প্রধান সংবাদ নেই।
+
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    let news =
+        allNews.find(
+            function(item){
+
+                return (
+                    item.isMain === true ||
+                    item.isMain === "true" ||
+                    item.featured === true ||
+                    item.featured === "true"
+                );
+
+            }
+        );
+
+
+    if(!news){
+
+        news =
+            allNews[0];
+
+    }
+
+
+    box.innerHTML = `
+
+    <div
+    class="main-news-card"
+    onclick='openNewsById("${news.id}")'>
+
+        ${imageHTML(
+            news.image,
+            "main-news-image"
+        )}
+
+        <div class="main-news-content">
+
+            <div class="main-news-title">
+
+                ${safeText(
+                    news.title
+                )}
+
+            </div>
+
+            <div class="main-news-meta">
+
+                ${safeText(
+                    news.category
+                )}
+
+                •
+                
+                ${safeText(
+                    news.district ||
+                    "বাংলাদেশ"
+                )}
+
+                •
+                
+                ${formatDate(
+                    news.createdAt
+                )}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   OPEN NEWS BY ID
+===================================================== */
+
+function openNewsById(
+    id
+){
+
+    const news =
+        allNews.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(news){
+
+        openNews(news);
+
+    }
+
+}
+
+
+/* =====================================================
+   NEWS LIST
+===================================================== */
+
+function renderNewsList(
+    list
+){
+
+    const box =
+        document.getElementById(
+            "newsList"
+        );
+
+
+    list =
+        list ||
+        allNews;
+
+
+    if(!list.length){
+
+        box.innerHTML = `
+        <div class="empty">
+
+            <div class="empty-icon">
+                📰
+            </div>
+
+            কোনো প্রকাশিত সংবাদ পাওয়া যায়নি।
+
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    list.slice(
+        0,
+        30
+    )
+    .forEach(
+        function(news){
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "news-card";
+
+
+            card.innerHTML = `
+
+            ${imageHTML(
+                news.image,
+                "news-image"
+            )}
+
+            <div>
+
+                <div class="news-title">
+
+                    ${safeText(
+                        news.title
+                    )}
+
+                </div>
+
+                <div class="news-meta">
+
+                    ${safeText(
+                        news.category
+                    )}
+
+                    •
+                    
+                    ${safeText(
+                        news.district ||
+                        "বাংলাদেশ"
+                    )}
+
+                </div>
+
+            </div>
+
+            `;
+
+
+            card.onclick =
+                function(){
+
+                    openNews(
+                        news
+                    );
+
+                };
+
+
+            box.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOCAL NEWS
+===================================================== */
+
+function renderLocalNews(){
+
+    const box =
+        document.getElementById(
+            "localNewsList"
+        );
+
+
+    if(!userLocation){
+
+        box.innerHTML = `
+        <div class="empty">
+
+            <div class="empty-icon">
+                📍
+            </div>
+
+            আপনার এলাকা নির্বাচন করুন।
+
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    const list =
+        allNews.filter(
+            function(news){
+
+                return matchesLocation(
+                    news
+                );
+
+            }
+        );
+
+
+    if(!list.length){
+
+        box.innerHTML = `
+        <div class="empty">
+
+            <div class="empty-icon">
+                📍
+            </div>
+
+            আপনার নির্বাচিত এলাকার
+            কোনো প্রকাশিত সংবাদ পাওয়া যায়নি।
+
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    list.slice(
+        0,
+        10
+    )
+    .forEach(
+        function(news){
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "news-card";
+
+
+            card.innerHTML = `
+
+            ${imageHTML(
+                news.image,
+                "news-image"
+            )}
+
+            <div>
+
+                <div class="news-title">
+
+                    ${safeText(
+                        news.title
+                    )}
+
+                </div>
+
+                <div class="news-meta">
+
+                    📍
+
+                    ${safeText(
+                        news.village ||
+                        news.union ||
+                        news.upazila ||
+                        news.district ||
+                        "এলাকা"
+                    )}
+
+                </div>
+
+            </div>
+
+            `;
+
+
+            card.onclick =
+                function(){
+
+                    openNews(
+                        news
+                    );
+
+                };
+
+
+            box.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchNews(){
+
+    const keyword =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    if(!keyword){
+
+        renderNewsList();
+
+        return;
+
+    }
+
+
+    const result =
+        allNews.filter(
+            function(news){
+
+                const text = (
+
+                    safeText(
+                        news.title
+                    ) +
+
+                    " " +
+
+                    safeText(
+                        news.content
+                    ) +
+
+                    " " +
+
+                    safeText(
+                        news.category
+                    ) +
+
+                    " " +
+
+                    safeText(
+                        news.district
+                    ) +
+
+                    " " +
+
+                    safeText(
+                        news.upazila
+                    ) +
+
+                    " " +
+
+                    safeText(
+                        news.union
+                    ) +
+
+                    " " +
+
+                    safeText(
+                        news.village
+                    )
+
+                ).toLowerCase();
+
+
+                return text.includes(
+                    keyword
+                );
+
+            }
+        );
+
+
+    renderNewsList(
+        result
+    );
+
+}
+
+
+/* =====================================================
+   CATEGORY PAGE
+===================================================== */
+
+function openCategoryPage(
+    category
+){
+
+    document.getElementById(
+        "categoryPageTitle"
+    ).innerText =
+        category;
+
+
+    const page =
+        document.getElementById(
+            "categoryPage"
+        );
+
+
+    page.style.display =
+        "block";
+
+
+    document.body.style.overflow =
+        "hidden";
+
+
+    const box =
+        document.getElementById(
+            "categoryPageNews"
+        );
+
+
+    let result;
+
+
+    if(
+        category ===
+        "সকল সংবাদ"
+    ){
+
+        result =
+            allNews;
+
+    }
+    else
+    if(
+        category ===
+        "জরুরি সংবাদ"
+    ){
+
+        loadEmergencyPage();
+
+        return;
+
+    }
+    else
+    if(
+        category ===
+        "রাশিফল"
+    ){
+
+        result =
+            allNews.filter(
+                function(news){
+
+                    return (
+                        news.category ===
+                        "রাশিফল"
+                    );
+
+                }
+            );
+
+    }
+    else{
+
+        result =
+            allNews.filter(
+                function(news){
+
+                    return (
+                        safeText(
+                            news.category
+                        )
+                        .trim()
+                        ===
+                        safeText(
+                            category
+                        ).trim()
+                    );
+
+                }
+            );
+
+    }
+
+
+    renderCategoryNews(
+        result
+    );
+
+}
+
+
+function renderCategoryNews(
+    list
+){
+
+    const box =
+        document.getElementById(
+            "categoryPageNews"
+        );
+
+
+    if(!list.length){
+
+        box.innerHTML = `
+        <div class="empty">
+
+            <div class="empty-icon">
+                📰
+            </div>
+
+            এই বিভাগে এখনো কোনো
+            প্রকাশিত সংবাদ নেই।
+
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    list.forEach(
+        function(news){
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "news-card";
+
+
+            card.innerHTML = `
+
+            ${imageHTML(
+                news.image,
+                "news-image"
+            )}
+
+            <div>
+
+                <div class="news-title">
+
+                    ${safeText(
+                        news.title
+                    )}
+
+                </div>
+
+                <div class="news-meta">
+
+                    ${safeText(
+                        news.category
+                    )}
+
+                    •
+
+                    ${safeText(
+                        news.district ||
+                        "বাংলাদেশ"
+                    )}
+
+                </div>
+
+            </div>
+
+            `;
+
+
+            card.onclick =
+                function(){
+
+                    openNews(
+                        news
+                    );
+
+                };
+
+
+            box.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+function closeCategoryPage(){
+
+    document.getElementById(
+        "categoryPage"
+    ).style.display =
+        "none";
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =====================================================
+   EMERGENCY PAGE
+===================================================== */
+
+function loadEmergencyPage(){
+
+    database
+    .ref("emergencyNews")
+    .orderByChild("status")
+    .equalTo("published")
+    .once(
+        "value",
+        function(snapshot){
+
+            let data =
+                snapshot.val();
+
+            let list = [];
+
+
+            if(data){
+
+                Object.keys(data)
+                .forEach(
+                    function(id){
+
+                        let item =
+                            data[id];
+
+                        if(
+                            item &&
+                            !isExpired(item)
+                        ){
+
+                            list.push(
+                                normalizeNews(
+                                    id,
+                                    item
+                                )
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            list.sort(
+                function(a,b){
+
+                    return Number(
+                        b.createdAt
+                    )
+                    -
+                    Number(
+                        a.createdAt
+                    );
+
+                }
+            );
+
+
+            renderCategoryNews(
+                list
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOAD EMERGENCY
+===================================================== */
+
+function loadEmergency(){
+
+    database
+    .ref("emergencyNews")
+    .orderByChild("status")
+    .equalTo("published")
+    .on(
+        "value",
+        function(snapshot){
+
+            let data =
+                snapshot.val();
+
+            let list = [];
+
+
+            if(data){
+
+                Object.keys(data)
+                .forEach(
+                    function(id){
+
+                        let item =
+                            data[id];
+
+                        if(
+                            item &&
+                            !isExpired(item)
+                        ){
+
+                            list.push(
+                                item
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            list.sort(
+                function(a,b){
+
+                    return Number(
+                        b.createdAt ||
+                        b.timestamp ||
+                        0
+                    )
+                    -
+                    Number(
+                        a.createdAt ||
+                        a.timestamp ||
+                        0
+                    );
+
+                }
+            );
+
+
+            const box =
+                document.getElementById(
+                    "emergencyList"
+                );
+
+
+            if(!list.length){
+
+                box.innerHTML = `
+
+                <div class="emergency-head">
+                    🚨 জরুরি সংবাদ
+                </div>
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        📢
+                    </div>
+
+                    এখনো কোনো জরুরি সংবাদ
+                    প্রকাশিত হয়নি।
+
+                </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            let html = `
+
+            <div class="emergency-head">
+                🚨 জরুরি সংবাদ
+            </div>
+
+            `;
+
+
+            list.slice(
+                0,
+                5
+            )
+            .forEach(
+                function(item){
+
+                    html += `
+
+                    <div class="emergency-item"
+                    onclick='openEmergencyById("${safeText(item.id || "")}")'>
+
+                        <div class="emergency-title">
+
+                            ${safeText(
+                                item.title ||
+                                item.headline ||
+                                "জরুরি সংবাদ"
+                            )}
+
+                        </div>
+
+                        <div class="emergency-text">
+
+                            ${safeText(
+                                item.content ||
+                                item.description ||
+                                ""
+                            ).substring(
+                                0,
+                                180
+                            )}
+
+                        </div>
+
+                    </div>
+
+                    `;
+
+                }
+            );
+
+
+            box.innerHTML =
+                html;
+
+
+            window.currentEmergency =
+                list;
+
+        }
+    );
+
+}
+
+
+function openEmergencyById(
+    id
+){
+
+    const list =
+        window.currentEmergency ||
+        [];
+
+
+    const item =
+        list.find(
+            function(x){
+
+                return x.id === id;
+
+            }
+        );
+
+
+    if(item){
+
+        openNews(
+            normalizeNews(
+                id,
+                item
+            )
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DYNAMIC CARDS
+===================================================== */
+
+function loadDynamicCards(){
+
+    database
+    .ref("sections")
+    .on(
+        "value",
+        function(snapshot){
+
+            const data =
+                snapshot.val();
+
+            const wrapper =
+                document.getElementById(
+                    "dynamicSectionWrapper"
+                );
+
+            const box =
+                document.getElementById(
+                    "dynamicCards"
+                );
+
+
+            box.innerHTML = "";
+
+
+            if(!data){
+
+                wrapper.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            let list = [];
+
+
+            Object.keys(data)
+            .forEach(
+                function(id){
+
+                    let item =
+                        data[id];
+
+
+                    if(!item){
+
+                        return;
+
+                    }
+
+
+                    /*
+                       Section নিজে Delete না হলে থাকবে।
+                       কিন্তু Content-এর expiry থাকলে
+                       expired content hide হবে।
+                    */
+
+                    if(
+                        item.status ===
+                        "disabled"
+                    ){
+
+                        return;
+
+                    }
+
+
+                    if(
+                        item.visible ===
+                        false ||
+                        item.visible ===
+                        "false"
+                    ){
+
+                        return;
+
+                    }
+
+
+                    if(
+                        item.expiresAt &&
+                        Date.now() >
+                        Number(
+                            item.expiresAt
+                        )
+                    ){
+
+                        /*
+                           Card থাকবে না মুছবে না;
+                           expired section content
+                           এখানে display করা হচ্ছে না।
+                        */
+
+                        return;
+
+                    }
+
+
+                    list.push({
+
+                        id:id,
+
+                        ...item
+
+                    });
+
+                }
+            );
+
+
+            if(!list.length){
+
+                wrapper.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            list.sort(
+                function(a,b){
+
+                    return Number(
+                        a.order || 999
+                    )
+                    -
+                    Number(
+                        b.order || 999
+                    );
+
+                }
+            );
+
+
+            wrapper.style.display =
+                "block";
+
+
+            list.forEach(
+                function(item){
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+                    card.className =
+                        "dynamic-card";
+
+
+                    card.innerHTML = `
+
+                    <div class="dynamic-icon">
+
+                        ${safeText(
+                            item.icon ||
+                            "⭐"
+                        )}
+
+                    </div>
+
+                    <div class="dynamic-title">
+
+                        ${safeText(
+                            item.title ||
+                            "বিশেষ বিভাগ"
+                        )}
+
+                    </div>
+
+                    <div class="dynamic-description">
+
+                        ${safeText(
+                            item.description ||
+                            ""
+                        )}
+
+                    </div>
+
+                    `;
+
+
+                    card.onclick =
+                        function(){
+
+                            if(
+                                item.category
+                            ){
+
+                                openCategoryPage(
+                                    item.category
+                                );
+
+                            }
+                            else
+                            if(
+                                item.newsId
+                            ){
+
+                                openNewsById(
+                                    item.newsId
+                                );
+
+                            }
+                            else
+                            if(
+                                item.url
+                            ){
+
+                                window.open(
+                                    item.url,
+                                    "_blank"
+                                );
+
+                            }
+                            else{
+
+                                showMessage(
+                                    item.content ||
+                                    item.description ||
+                                    "এই বিভাগে এখনো কোনো তথ্য প্রকাশিত হয়নি।",
+                                    item.title ||
+                                    "বিশেষ বিভাগ"
+                                );
+
+                            }
+
+                        };
+
+
+                    box.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOCATION MODAL
+===================================================== */
+
+function openLocationModal(){
+
+    document.getElementById(
+        "locationModal"
+    ).style.display =
+        "flex";
+
+
+    if(userLocation){
+
+        document.getElementById(
+            "divisionSelect"
+        ).value =
+            userLocation.division ||
+            "";
+
+        loadDistricts();
+
+        document.getElementById(
+            "districtSelect"
+        ).value =
+            userLocation.district ||
+            "";
+
+        document.getElementById(
+            "upazilaInput"
+        ).value =
+            userLocation.upazila ||
+            userLocation.thana ||
+            "";
+
+        document.getElementById(
+            "unionInput"
+        ).value =
+            userLocation.union ||
+            "";
+
+        document.getElementById(
+            "villageInput"
+        ).value =
+            userLocation.village ||
+            userLocation.area ||
+            "";
+
+    }
+
+}
+
+
+function closeLocationModal(){
+
+    document.getElementById(
+        "locationModal"
+    ).style.display =
+        "none";
+
+}
+
+
+function loadDistricts(){
+
+    const division =
+        document.getElementById(
+            "divisionSelect"
+        ).value;
+
+
+    const select =
+        document.getElementById(
+            "districtSelect"
+        );
+
+
+    select.innerHTML =
+        '<option value="">জেলা নির্বাচন করুন</option>';
+
+
+    if(
+        !districts[division]
+    ){
+
+        return;
+
+    }
+
+
+    districts[division]
+    .forEach(
+        function(district){
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                district;
+
+            option.innerText =
+                district;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+function saveLocation(){
+
+    const division =
+        document.getElementById(
+            "divisionSelect"
+        ).value;
+
+
+    const district =
+        document.getElementById(
+            "districtSelect"
+        ).value;
+
+
+    const upazila =
+        document.getElementById(
+            "upazilaInput"
+        ).value.trim();
+
+
+    const union =
+        document.getElementById(
+            "unionInput"
+        ).value.trim();
+
+
+    const village =
+        document.getElementById(
+            "villageInput"
+        ).value.trim();
+
+
+    if(!division){
+
+        alert(
+            "দয়া করে বিভাগ নির্বাচন করুন।"
+        );
+
+        return;
+
+    }
+
+
+    if(!district){
+
+        alert(
+            "দয়া করে জেলা নির্বাচন করুন।"
+        );
+
+        return;
+
+    }
+
+
+    userLocation = {
+
+        division:
+        division,
+
+        district:
+        district,
+
+        upazila:
+        upazila,
+
+        union:
+        union,
+
+        village:
+        village
+
+    };
+
+
+    localStorage.setItem(
+        "deshbarta420_location",
+        JSON.stringify(
+            userLocation
+        )
+    );
+
+
+    updateLocationUI();
+
+    renderLocalNews();
+
+    closeLocationModal();
+
+
+    showMessage(
+        "আপনার এলাকার তথ্য সংরক্ষণ করা হয়েছে। এখন আপনার নির্বাচিত এলাকার প্রকাশিত সংবাদ দেখানো হবে।",
+        "📍 এলাকা সংরক্ষিত"
+    );
+
+}
+
+
+function updateLocationUI(){
+
+    const title =
+        document.getElementById(
+            "locationTitle"
+        );
+
+    const text =
+        document.getElementById(
+            "locationText"
+        );
+
+
+    if(!userLocation){
+
+        title.innerText =
+            "আমার এলাকার সংবাদ";
+
+        text.innerText =
+            "আপনার এলাকা নির্বাচন করলে সেই এলাকার সংবাদ এখানে দেখানো হবে।";
+
+        return;
+
+    }
+
+
+    title.innerText =
+        "📍 " +
+        safeText(
+            userLocation.village ||
+            userLocation.union ||
+            userLocation.upazila ||
+            userLocation.district
+        );
+
+
+    let parts = [];
+
+
+    if(userLocation.division){
+
+        parts.push(
+            userLocation.division
+        );
+
+    }
+
+    if(userLocation.district){
+
+        parts.push(
+            userLocation.district
+        );
+
+    }
+
+    if(userLocation.upazila){
+
+        parts.push(
+            userLocation.upazila
+        );
+
+    }
+
+    if(userLocation.union){
+
+        parts.push(
+            userLocation.union
+        );
+
+    }
+
+    if(userLocation.village){
+
+        parts.push(
+            userLocation.village
+        );
+
+    }
+
+
+    text.innerText =
+        parts.join(
+            " → "
+        );
+
+}
+
+
+/* =====================================================
+   LOCAL NEWS PAGE
+===================================================== */
+
+function openLocalNews(){
+
+    if(!userLocation){
+
+        openLocationModal();
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "categoryPageTitle"
+    ).innerText =
+        "📍 আমার এলাকার সংবাদ";
+
+
+    document.getElementById(
+        "categoryPage"
+    ).style.display =
+        "block";
+
+
+    document.body.style.overflow =
+        "hidden";
+
+
+    const result =
+        allNews.filter(
+            function(news){
+
+                return matchesLocation(
+                    news
+                );
+
+            }
+        );
+
+
+    renderCategoryNews(
+        result
+    );
+
+}
+
+
+/* =====================================================
+   HOROSCOPE
+===================================================== */
+
+function openHoroscope(
+    sign
+){
+
+    const result =
+        allNews.filter(
+            function(news){
+
+                return (
+
+                    safeText(
+                        news.category
+                    ) ===
+                    "রাশিফল"
+
+                    ||
+
+                    safeText(
+                        news.sign
+                    ) ===
+                    sign
+
+                );
+
+            }
+        );
+
+
+    if(result.length){
+
+        openNews(
+            result[0]
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+
+        sign +
+        " রাশির জন্য এখনো কোনো প্রকাশিত রাশিফল পাওয়া যায়নি।",
+
+        "🔮 " +
+        sign +
+        " রাশিফল"
+
+    );
+
+}
+
+
+/* =====================================================
+   POST REQUEST
+===================================================== */
+
+function openPostRequest(){
+
+    showMessage(
+
+        "সংবাদ পাঠানোর পূর্ণ Form পরবর্তী ধাপে যুক্ত হবে।\n\nএখানে User ID, নাম, সংবাদ শিরোনাম, বিস্তারিত সংবাদ, ছবি, ভিডিও, বিভাগ এবং এলাকা নিয়ে Post Request Firebase-এর Pending অংশে পাঠানো হবে।",
+
+        "✍️ সংবাদ পাঠান"
+
+    );
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function openProfile(){
+
+    let locationText =
+        "এলাকা সেট করা হয়নি";
+
+
+    if(userLocation){
+
+        locationText =
+            [
+                userLocation.division,
+                userLocation.district,
+                userLocation.upazila,
+                userLocation.union,
+                userLocation.village
+
+            ]
+            .filter(Boolean)
+            .join(
+                " → "
+            );
+
+    }
+
+
+    showMessage(
+
+        "User ID:\n" +
+        deviceUserId +
+
+        "\n\nএলাকা:\n" +
+        locationText +
+
+        "\n\nপরবর্তী ধাপে এখানে সম্পূর্ণ Registration, Login, Profile, Point, Post History এবং User Dashboard যুক্ত হবে।",
+
+        "👤 আমার প্রোফাইল"
+
+    );
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    text,
+    title
+){
+
+    document.getElementById(
+        "modalTitle"
+    ).innerText =
+        title ||
+        "দেশ বার্তা ৪২০";
+
+
+    document.getElementById(
+        "modalMeta"
+    ).innerText =
+        "";
+
+
+    document.getElementById(
+        "modalMedia"
+    ).innerHTML =
+        "";
+
+
+    document.getElementById(
+        "modalText"
+    ).innerText =
+        text;
+
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+function goHome(){
+
+    closeCategoryPage();
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        updateLocationUI();
+
+        loadHeadlines();
+
+        loadNews();
+
+        loadEmergency();
+
+        loadDynamicCards();
+
+    }
+);
+
+
+/* =====================================================
+   AUTO REFRESH FOR EXPIRY
+===================================================== */
+
+setInterval(
+    function(){
+
+        /*
+           Content-এর expiry হয়ে গেলে
+           Firebase থেকে Card মুছে দেওয়া হবে না।
+           UI আবার Render হবে।
+        */
+
+        renderNewsList();
+
+        renderLocalNews();
+
+    },
+    60000
+);
+
+</script>
 
 </body>
-</html>
+  </html>
